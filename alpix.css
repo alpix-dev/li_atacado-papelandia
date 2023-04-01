@@ -1175,6 +1175,7 @@ body #rodape .gateways-rodape{
     vertical-align: middle;
     display: inline-block;
     margin: 0 15px 0 0;
+    background:#fff
     line-height: 12px;
 }
 .theme_aside #theme_filter > div > ul > li.active > a:before{
@@ -2133,9 +2134,10 @@ margin:0;
 }
 .lista-redes ul li{border-left:0;}
 #barraNewsletter .componente input[type="text"]{border:0!important}
+.filter-trigger.btn-icon svg path{fill:#fff!important}
 .filter-trigger > span > i{
     background: var(--primaryColor);
-    color: #fff;
+    color: #fff!important;
     font-size: 12px;
     font-weight: 300;
     height: 16px;
@@ -4198,3 +4200,4 @@ body .slick-slider .slick-dots > li.slick-active > button{
     opacity: 1;
 }
 
+#theme_filter ul{background:#f8f8f8}
