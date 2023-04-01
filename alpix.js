@@ -286,8 +286,9 @@ theme.settings.sliders.verticalProductGallery = {
             slidesToShow: 3,
             slidesToScroll: 3,
             infinite: true,
-            
-            centerMode:false
+            vertical:false,
+            centerMode:false,
+            arrows:false
         }
         },
         {
@@ -295,7 +296,9 @@ theme.settings.sliders.verticalProductGallery = {
         settings: {
             slidesToShow: 4,
             slidesToScroll: 1,
-            centerMode:false
+            centerMode:false,
+            vertical:false,
+            arrows:false
         }
         }
     ]    
@@ -324,7 +327,8 @@ theme.settings.sliders.horizontalProductGallery = {
         settings: {
             slidesToShow: 4,
             slidesToScroll: 1,
-            centerMode:false
+            centerMode:false,
+            dots:false
         }
         }
     ]
@@ -646,7 +650,23 @@ theme.functions.WS_LOAD = function(){
                 }
             }
         }
-    })
+    });
+
+    if(theme.currentPage == "pagina-produto"){
+        let info = WS_PAPELANDIA.find(el => el.product_id == window.PRODUTO_ID);
+        if(info){
+            if(info.labels.length > 0){
+                $('.info-principal-produto').after('<div theme-content="labels"></div>'); 
+                if(info.labels.includes(';')){
+                    $.each(info.labels.split(';'), function(k, i){
+                        $('.principal').find('[theme-content="labels"]').append('<div>'+ i +'</div>');    
+                    })
+                }else{
+                    $('.principal').find('[theme-content="labels"]').append('<div>'+ info.labels +'</div>');
+                }
+            }
+        }
+    }
     
     
 };
@@ -1693,8 +1713,11 @@ theme.functions['pagina-produto'] = function(){
 
     if($('.thumbs-vertical').length > 0){
         theme.functions.flexDestroy($('.thumbs-vertical #carouselImagem'));
-        // if($('.thumbs-vertical #carouselImagem .miniaturas a').length > theme.settings.sliders.verticalProductGallery.slidesToShow){
-        //     $('.thumbs-vertical #carouselImagem .miniaturas').apx_slick(theme.settings.sliders.verticalProductGallery);
+        
+        // if(theme.isMobile){
+        //     if($('.thumbs-vertical #carouselImagem .miniaturas a').length > theme.settings.sliders.verticalProductGallery.slidesToShow){
+        //         $('.thumbs-vertical #carouselImagem .miniaturas').apx_slick(theme.settings.sliders.verticalProductGallery);
+        //     }
         // }
     }
     if($('.thumbs-horizontal').length > 0){
@@ -1791,6 +1814,8 @@ theme.functions['pagina-produto'] = function(){
             }
         }
     }
+
+    //$('.info-principal-produto').after('<div theme-content="labels"></div>'); 
     
 };
 
@@ -1936,25 +1961,25 @@ $(document).ready(function(){
     menuAjuda.appendTo('.footer-content-3');
     $('#theme_footer-content1 > ul > li > a:contains(Ocultar)').closest('li').prev('li').nextAll().remove();
 
-    $('.menu.superior > .nivel-um > li > a > strong:contains(Categorias)').closest('li').prev('li').nextAll().wrapAll('<ul class="nivel-dois borda-alpha" id="p_categories-group"></ul>');
+    $('#p_header .menu.superior > .nivel-um > li > a > strong:contains(Categorias)').closest('li').prev('li').nextAll().wrapAll('<ul class="nivel-dois borda-alpha" id="p_categories-group"></ul>');
     $('#p_categories-group').wrap('<li class="categoria-categorias com-filho borda-principal"></li>');
     $('.categoria-categorias').prepend('<a href="javascript:;"><strong class="titulo">Categorias</strong><i class="icon-chevron-down fundo-secundario"></i></a>')
     
 
     //theme.benefitsStripe
-    if(theme.benefitsStripe.active == 1 && theme.benefitsStripe.list.length > 0 && $('.pagina-inicial').length > 0){
-        $('.secao-principal').prepend('<div class="theme_benefitsStripe"></div>');
-        $.each(theme.benefitsStripe.list, function(key, item){
-            let block = $('<div class="item"></div>');
-            if(item.img){ block.append('<img src="'+ item.img +'"/>') }
-            block.append('<div class="text"></div>');
-            if(item.title){ block.find('.text').append('<strong>'+ item.title +'</strong>') }
-            if(item.subtitle){ block.find('.text').append('<p>'+ item.subtitle +'</p>') }            
-            if(item.link){ block.wrapInner('<a href="'+ item.link +'"></a>') }
-            block.appendTo('.theme_benefitsStripe');
-        });
-        $('.theme_benefitsStripe').apx_slick(theme.settings.sliders.benefitsStripe);
-    }
+    // if(theme.benefitsStripe.active == 1 && theme.benefitsStripe.list.length > 0 && $('.pagina-inicial').length > 0){
+    //     $('.secao-principal').prepend('<div class="theme_benefitsStripe"></div>');
+    //     $.each(theme.benefitsStripe.list, function(key, item){
+    //         let block = $('<div class="item"></div>');
+    //         if(item.img){ block.append('<img src="'+ item.img +'"/>') }
+    //         block.append('<div class="text"></div>');
+    //         if(item.title){ block.find('.text').append('<strong>'+ item.title +'</strong>') }
+    //         if(item.subtitle){ block.find('.text').append('<p>'+ item.subtitle +'</p>') }            
+    //         if(item.link){ block.wrapInner('<a href="'+ item.link +'"></a>') }
+    //         block.appendTo('.theme_benefitsStripe');
+    //     });
+    //     $('.theme_benefitsStripe').apx_slick(theme.settings.sliders.benefitsStripe);
+    // }
 
     
 
