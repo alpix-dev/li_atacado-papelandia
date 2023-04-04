@@ -4391,4 +4391,6 @@ body .slick-slider .slick-dots > li.slick-active > button{
     .pagina-inicial #listagemProdutos [class^="lista_"] .arrow-l{left:0}
     [class^=theme_customBanners]:last-child{margin:2rem 0 0 0}
     .pagina-inicial #listagemProdutos [class^="lista_"]{margin:1rem 0}
+
+    .function-dropdown{left:-150px;right:auto}
 }
