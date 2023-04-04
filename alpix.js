@@ -192,8 +192,19 @@ theme.settings.sliders.categorySlider = {
     nextArrow: theme.settings.sliders.config.nextArrow,
     responsive: [
         {
-            breakpoint:1000,
-            settings:"unslick"
+            breakpoint: 990,
+            settings: {
+                slidesToShow: 4,
+                slidesToScroll: 1                
+            }
+        },
+        {
+            breakpoint: 600,
+            settings: {
+                slidesToShow: 3,
+                slidesToScroll: 1,
+                dots:true
+            }
         }
     ] 
 }
@@ -386,31 +397,20 @@ theme.build.header = function(template){
     
     
     $('#theme_header-functions').append('<li class="p_cart">' + theme.headerCart + '<span>Sacola</span></li>');
-    $('#theme_header-functions').prepend('<li class="p_account function-watch-dropdown"><button type="button" class="account-trigger"><span class="ico_svg">'+ theme.icon.account +'</span><div>Olá, <span>'+ theme.userFirstname+ '</span><b>Minha Conta</b></div></button><ul class="function-dropdown"></ul></li>');
+    $('#theme_header-functions').prepend('<li class="p_account function-watch-dropdown"><button type="button" class="account-trigger"><span class="ico_svg">'+ theme.icon.account +'</span><div>Olá, <span>'+ theme.userFirstname+ '</span><b>Minha Conta</b></div></button></li>');
     $('#theme_header-functions').prepend('<li class="p_wishlist"><a class="" href=""><span class="ico_svg">'+ theme.icon.wishlist +'</span></a></li>');
     $('#theme_header-functions').prepend('<li class="p_contact function-watch-dropdown"><span class="ico_svg">'+ theme.icon.contact +'</span><ul class="function-dropdown"></ul></li>');
     
         
     $('.carrinho .icon-shopping-cart').before(theme.icon.cart);
     $('.carrinho .icon-shopping-cart').remove();
-    
 
-    // if(theme.stripe.content){
-    //     let stripe = $('<div id="theme_header-stripe" style="background:'+ theme.stripe.background +'; color:'+ theme.stripe.color +'">'+ theme.stripe.content+'</div>');
-    //     if(theme.stripe.fixed){
-    //         theme.stripe.position == 1 ? stripe.prependTo('#cabecalho') : stripe.appendTo('#cabecalho');
-    //     }else{
-    //         theme.stripe.position == 1 ? stripe.insertBefore('#cabecalho') : stripe.insertAfter('#cabecalho');
-    //     }
-        
-    // }
+
+
+    theme.functions.contact();
+    
     
     $('.barra-inicial').remove();
-
-    
-
-    
-    
 };
 theme.build.headerApp = function(){
     $('#cabecalho').html(theme.templates.headerApp).addClass('no-sticky');
@@ -643,10 +643,10 @@ theme.functions.WS_LOAD = function(){
                 me.find('.info-produto').before('<div theme-content="labels"></div>');
                 if(info.labels.includes(';')){
                     $.each(info.labels.split(';'), function(k, i){
-                        me.find('[theme-content="labels"]').append('<div>'+ i +'</div>');    
+                        me.find('[theme-content="labels"]').append('<div data-name="'+ i +'">'+ i +'</div>');    
                     })
                 }else{
-                    me.find('[theme-content="labels"]').append('<div>'+ info.labels +'</div>');
+                    me.find('[theme-content="labels"]').append('<div  data-name="'+ info.labels +'">'+ info.labels +'</div>');
                 }
             }
         }
@@ -659,16 +659,34 @@ theme.functions.WS_LOAD = function(){
                 $('.info-principal-produto').after('<div theme-content="labels"></div>'); 
                 if(info.labels.includes(';')){
                     $.each(info.labels.split(';'), function(k, i){
-                        $('.principal').find('[theme-content="labels"]').append('<div>'+ i +'</div>');    
+                        $('.principal').find('[theme-content="labels"]').append('<div  data-name="'+ i +'">'+ i +'</div>');    
                     })
                 }else{
-                    $('.principal').find('[theme-content="labels"]').append('<div>'+ info.labels +'</div>');
+                    $('.principal').find('[theme-content="labels"]').append('<div  data-name="'+ info.labels +'">'+ info.labels +'</div>');
                 }
             }
         }
     }
     
     
+};
+
+theme.functions.contact = function(){
+    if(theme.extra.telefone){
+        $('.p_contact > ul').append('<li><b>Telefone</b><a href="tel:'+theme.extra.telefone+'" target="_blank"><span>' + theme.extra.telefone + '</span></a></li>');
+    }
+
+    if(theme.extra.whatsapp){
+        $('.p_contact > ul').append('<li><b>WhatsApp</b><a href="https://wa.me/55'+theme.extra.whatsapp.replace('Whatsapp: ','').replace('(','').replace(')','').replace('-','').replaceAll(' ','').trim() +'" target="_blank"><span>' + theme.extra.whatsapp + '</span></a></li>');
+    }
+    if(theme.extra.email){
+        $('.p_contact > ul').append('<li><b>E-mail</b><a href="mailto:'+theme.extra.email+'" target="_blank"><span>' + theme.extra.email + '</span></a></li>');
+    }
+    if(theme.extra.atendimento){
+        $('.p_contact > ul').append('<li><b>Atendimento</b><span>' + theme.extra.atendimento + '</span></li>');
+    }
+
+    $('.p_contact > ul').append('<li><a href="#modalContato" data-toggle="modal" data-target="#modalContato"><i class="fa fa-comment-o"></i>Fale Conosco</a></li>');
 };
 
 theme.functions.productListItemEqualSize = function(){
@@ -804,11 +822,11 @@ theme.functions.datepicker = function(){
     });
 };
 theme.destaquesMenu = [];
-theme.destaquesMenu.push({
-    textoAlvo: 'Super Atacado',
-    textoDestaque: 'TOP 📦',
-    corHexa: '#F21154'
-});
+// theme.destaquesMenu.push({
+//     textoAlvo: 'Super Atacado',
+//     textoDestaque: 'TOP 📦',
+//     corHexa: '#F21154'
+// });
 
 theme.titulos = [];
 theme.titulos.push({
@@ -894,6 +912,9 @@ theme.functions.slickBanners = function(){
         arrows:false,
         dots:false        
     });
+
+    $('#theme_categorySlider li').wrap('<div class="item"/>').contents().unwrap();
+    $('#theme_categorySlider > .slides').apx_slick(theme.settings.sliders.categorySlider);
 };
 
 // theme.functions.lateralBannerFromPanelFunctions = function(ref){
@@ -963,40 +984,29 @@ theme.functions.bannerFromPanelFunctions = function(ref){
         //CATEGORY SLIDER
         if(trigger.includes('[item-categoria]')){
             if($('#theme_categorySlider').length == 0){
-                $('<div id="theme_categorySlider"><div class="slides"></div></div>').prependTo('#corpo > .conteiner');
+                $('<div id="theme_categorySlider"><div class="slides"></div></div>').appendTo('#corpo .listagem');
             }
             $(this).closest('li').appendTo('#theme_categorySlider > .slides'); 
             return true;
         }
 
         //BENEFITS SLIDER
-        if(trigger.includes('[item-vantagem]')){
-            if($('#theme_benefitsSlider').length == 0){
-                $('<div id="theme_benefitsSlider"><div class="slides"></div></div>').insertAfter('.secao-banners .banner.cheio');
-            }
-            $(this).closest('li').appendTo('#theme_benefitsSlider > .slides'); 
-            return true;
-        }
+        // if(trigger.includes('[item-vantagem]')){
+        //     if($('#theme_benefitsSlider').length == 0){
+        //         $('<div id="theme_benefitsSlider"><div class="slides"></div></div>').insertAfter('.secao-banners .banner.cheio');
+        //     }
+        //     $(this).closest('li').appendTo('#theme_benefitsSlider > .slides'); 
+        //     return true;
+        // }
 
         //TESTIMONIALS SLIDER
-        if(trigger.includes('[item-depoimento]')){
-            if($('#theme_testimonialSlider').length == 0){
-                $('<div id="theme_testimonialSlider" class="listagem"><div class="titulo-categoria cor-principal"><i class="svg-ico cor-principal">'+ theme.icon.testimonials +'</i><strong>'+ theme.lang.testimonialsTitle +'</strong></div><div class="slides"></div></div>').prependTo('#corpo > .conteiner');
-            }
-            $(this).closest('li').appendTo('#theme_testimonialSlider > .slides'); 
-            return true;
-        }
-
-        //FOOTER LOGO
-        if(trigger.includes('[logo-rodape]')){
-            if($('#theme_footer-logo').length == 0){
-                $('<div id="theme_footer-logo"></div>').insertBefore('.sobre-loja-rodape > span.titulo');
-            }
-            let r = $(this).closest('li');
-            $(this).appendTo('#theme_footer-logo'); 
-            r.remove();
-            return true;
-        }
+        // if(trigger.includes('[item-depoimento]')){
+        //     if($('#theme_testimonialSlider').length == 0){
+        //         $('<div id="theme_testimonialSlider" class="listagem"><div class="titulo-categoria cor-principal"><i class="svg-ico cor-principal">'+ theme.icon.testimonials +'</i><strong>'+ theme.lang.testimonialsTitle +'</strong></div><div class="slides"></div></div>').prependTo('#corpo > .conteiner');
+        //     }
+        //     $(this).closest('li').appendTo('#theme_testimonialSlider > .slides'); 
+        //     return true;
+        // }
 
         //trigger ICONS
         if(trigger.includes('[icone-menu:')){
@@ -1015,59 +1025,77 @@ theme.functions.bannerFromPanelFunctions = function(ref){
         }
 
         //THEME ICONS
-        if(trigger.includes('[icone-tema:')){
-            let regExp = /\[iconeTema:(.*?)\]/;
-            let target = regExp.exec(trigger);
-            //terminar aqui
+        // if(trigger.includes('[icone-tema:')){
+        //     let regExp = /\[iconeTema:(.*?)\]/;
+        //     let target = regExp.exec(trigger);
+        //     //terminar aqui
+        //     return true;
+        // }
+
+        //BANNERS WITH COUNTDOWN
+        // if(trigger.includes('[timer:')){
+        //     let regExp = /\[timer:(.*?)\]/;
+        //     let info = regExp.exec(trigger);
+        //     let removeAfter = $(this).closest('li');
+            
+        //     $(this).closest('li').contents().wrapAll('<div class="item apx_timer apx_timer-onBanner" data-end="'+ info[1] +'"/>');
+        //     $(this).closest('li').find('.apx_timer').append('<div class="apx_timer-Timer"><span class="d"></span><span class="h"></span><span class="m"></span><span class="s"></span></div>')
+        // }
+        
+        //SET LABEL ON PRODUCT WITH SPECIFIC CATEGORY ID
+        // if(trigger.includes('[selo-produto:')){
+        //     let regExp = /\[selo-produto:(.*?)\]/;
+        //     let target = regExp.exec(trigger);
+        //     let removeAfter = $(this).closest('li');
+        //     if(target[1]){
+        //         $(this).addClass('theme_seals');
+        //         if($('.prod-cat-' + target[1]).length > 0){
+        //             $(this).appendTo('.prod-cat-' + target[1] + ' .bandeiras-produto');
+        //         }
+        //         removeAfter.remove();    
+        //     }
+        // }
+
+        //COVER MARCA
+        // if(trigger.includes('[marca:')){
+        //     let regExp = /\[marca:(.*?)\]/;
+        //     let target = regExp.exec(trigger);
+        //     let removeAfter = $(this).closest('li');
+        //     if(target[1]){
+        //         if($('img[alt="' + target[1] + '"]').length > 0){
+        //             $(this).addClass('brand-cover');
+        //             $(this).insertBefore('img[alt="' + target[1] + '"]');
+        //             $('img[alt="' + target[1] + '"]').after('<strong>'+ target[1].toLowerCase() +'</strong>');
+        //         }
+        //         removeAfter.remove();    
+        //     }
+        // }
+        console.log(trigger)
+        //REDUCE IMAGES WHEN HAS A MOBILE VIEW
+        if(!trigger.includes('[mobile]') && theme.isMobile){
+            $(this).closest('li').remove();       
+            console.log('a')                 
+        }
+        if(trigger.includes('[mobile]') && !theme.isMobile){
+            $(this).closest('li').remove();  
+            console.log('b')                                       
+        }
+
+
+        //SOBRE NOS
+        
+        if(trigger.includes('[item-sobre-nos]')){
+            let removeAfter = $(this).closest('li');
+            $('.secao-secundaria').append('<div class="container" id="sobre-nos"></div>')
+            let sobre = $('<div class="'+ (trigger.includes('[mobile]') ? 'hidden-desktop' : 'hidden-phone') +'"></div>');
+            sobre.append('<p>'+ $(this).next('.info-banner').text() +'</p>')
+            sobre.append($(this));            
+            sobre.appendTo('#sobre-nos');
+            
+            removeAfter.remove();  
             return true;
         }
 
-        //BANNERS WITH COUNTDOWN
-        if(trigger.includes('[timer:')){
-            let regExp = /\[timer:(.*?)\]/;
-            let info = regExp.exec(trigger);
-            let removeAfter = $(this).closest('li');
-            
-            $(this).closest('li').contents().wrapAll('<div class="item apx_timer apx_timer-onBanner" data-end="'+ info[1] +'"/>');
-            $(this).closest('li').find('.apx_timer').append('<div class="apx_timer-Timer"><span class="d"></span><span class="h"></span><span class="m"></span><span class="s"></span></div>')
-        }
-        
-        //SET LABEL ON PRODUCT WITH SPECIFIC CATEGORY ID
-        if(trigger.includes('[selo-produto:')){
-            let regExp = /\[selo-produto:(.*?)\]/;
-            let target = regExp.exec(trigger);
-            let removeAfter = $(this).closest('li');
-            if(target[1]){
-                $(this).addClass('theme_seals');
-                if($('.prod-cat-' + target[1]).length > 0){
-                    $(this).appendTo('.prod-cat-' + target[1] + ' .bandeiras-produto');
-                }
-                removeAfter.remove();    
-            }
-        }
-
-        //COVER MARCA
-        if(trigger.includes('[marca:')){
-            let regExp = /\[marca:(.*?)\]/;
-            let target = regExp.exec(trigger);
-            let removeAfter = $(this).closest('li');
-            if(target[1]){
-                if($('img[alt="' + target[1] + '"]').length > 0){
-                    $(this).addClass('brand-cover');
-                    $(this).insertBefore('img[alt="' + target[1] + '"]');
-                    $('img[alt="' + target[1] + '"]').after('<strong>'+ target[1].toLowerCase() +'</strong>');
-                }
-                removeAfter.remove();    
-            }
-        }
-
-        //REDUCE IMAGES WHEN HAS A MOBILE VIEW
-        if(!trigger.includes('[mobile]') && theme.isMobile){
-            $(this).closest('li').remove();                        
-        }
-        if(trigger.includes('[mobile]') && !theme.isMobile){
-            $(this).closest('li').remove();                        
-        }
 
         //SET TOPBAR SLIDER
         if(trigger.includes('[tarja-texto]')){
@@ -1157,25 +1185,29 @@ theme.functions.saveBrands = function(){
         if(!localStorage.getItem('brand_' + name)){
             $.get(src,function(data){
                 let brand = {
-                    img: MEDIA_URL + window.LOJA_ID.toString().slice(0,4) + '/' + window.LOJA_ID + '/arquivos/hd_' + name.toLowerCase() + '.png',
+                    img: MEDIA_URL + window.LOJA_ID.toString().slice(0,4) + '/' + window.LOJA_ID + '/arquivos/marca_' + name.toLowerCase() + '.png',
                     description: $(data).find('.marca-info p').text()
-                }
-                
-                localStorage.setItem('brand_' + name, JSON.stringify(brand));
-                
+                }                
+                localStorage.setItem('brand_' + name, JSON.stringify(brand));                
+                theme.functions.brandLoaded();
             })
+        }else{
+            theme.functions.brandLoaded();
         }
     });
 }
 theme.functions.init = function(){
     theme.isLogged = $('.bem-vindo > span').text() != "identifique-se" ? true : false;
     theme.userFirstname = theme.isLogged ? $('#cabecalho .pequeno.dropdown-toggle[href$="/conta/login"]').text().trim().split(' ')[1] : 'Visitante';
+    $('#cabecalho .logo').find('img').attr('src',MEDIA_URL + window.LOJA_ID.toString().slice(0,4) + '/' + window.LOJA_ID + '/arquivos/logo_papelandia.svg');
     theme.logo = $('<div></div>').append($('#cabecalho .logo').clone()).html();
+    //theme.logo = $('<div></div>').append($('#cabecalho .logo').clone()).html();
+    //theme.logo = $(theme.logo).find('img').attr('src',MEDIA_URL + window.LOJA_ID.toString().slice(0,4) + '/' + window.LOJA_ID + '/arquivos/logo_papelandia.svg')
     theme.storePhone = $('.barra-inicial .canais-contato .icon-phone').parent().text().replace('Telefone: ','').trim();
     theme.storeSkype = $('.barra-inicial .canais-contato .fa-skype').parent().text().replace('Skype: ','').trim();
     theme.storeWhatsapp = $('.barra-inicial .canais-contato .fa-whatsapp').parent().text().replace('Whatsapp: ','').trim();
     theme.storeMail = "";
-    theme.storeSkype = $('.barra-inicial .canais-contato .fa-skype').parent().text().replace('Skype: ','').trim();
+    theme.storePeriod = "";
     theme.storeDescription = $('.sobre-loja-rodape > p').text();
 
     theme.primaryColor = $('[name="theme-color"]').attr('content');
@@ -1261,6 +1293,9 @@ theme.functions.init = function(){
         theme.functions.productListImageSize(theme.settings.imageSize);
         theme.functions.unflexBanners();
         //theme.functions.lateralBannerFromPanelFunctions();
+        $('.listagem > .titulo-categoria').each(function(k, i){
+            $(this).next('ul').addBack().wrapAll('<div class="lista_'+ k + '"></div>');
+        });
         theme.functions.bannerFromPanelFunctions();        
         theme.functions.slickBanners();
         theme.functions.productListItemEqualSize();
@@ -1539,11 +1574,24 @@ theme.functions['pagina-inicial'] = function(){
     }
     if($('.marcas').length){
         theme.functions.flexDestroy($('.marcas .flexslider'));
+        $('.marcas img').each(function(){
+            let name = $(this).attr('alt');
+            name = name ? name.toLowerCase().replaceAll(' ','-') : name;
+            let img = MEDIA_URL + window.LOJA_ID.toString().slice(0,4) + '/' + window.LOJA_ID + '/arquivos/capa_' + name + '.jpg';
+            
+            $(this).closest('a').addClass('brand-cover');
+            $(this).closest('a').css('background-image','url('+ img +')');            
+            $(this).after('<strong>'+ name +'</strong>');
+            
+            img = MEDIA_URL + window.LOJA_ID.toString().slice(0,4) + '/' + window.LOJA_ID + '/arquivos/marca_' + name + '.jpg';
+            $(this).attr('src', img);            
+        });
+
         $('.marcas .slides').apx_slick(theme.settings.sliders.brands);
         //$('<div class="titulo-categoria cor-principal"><strong>'+ theme.lang.brandTitle +'</strong></div>').prependTo('.marcas');
         //theme.functions.titulos();
         $('.marcas').prependTo('#listagemProdutos');
-    }
+    }    
 };
 
 theme.functions['pagina-categoria'] = function(){
@@ -1619,21 +1667,21 @@ theme.functions['pagina-categoria'] = function(){
 
 
     if(!theme.isMobile){        
-        document.addEventListener("DOMContentLoaded", function() {
-            let h = $('#cabecalho').innerHeight() - 1;
-            $('#theme_listing').addClass('sticky_this');
-            $('#theme_listing').css('top', h + 'px');
-        });
-        window.addEventListener('resize', function(event) {
-            let h = $('#cabecalho').innerHeight() - 1;
-            $('#theme_listing').addClass('sticky_this');
-            $('#theme_listing').css('top', h + 'px');
-        });
-        window.addEventListener('load', function(event) {
-            let h = $('#cabecalho').innerHeight() - 1;
-            $('#theme_listing').addClass('sticky_this');
-            $('#theme_listing').css('top', h + 'px');
-        });
+        // document.addEventListener("DOMContentLoaded", function() {
+        //     let h = $('#cabecalho').innerHeight() - 1;
+        //     $('#theme_listing').addClass('sticky_this');
+        //     $('#theme_listing').css('top', h + 'px');
+        // });
+        // window.addEventListener('resize', function(event) {
+        //     let h = $('#cabecalho').innerHeight() - 1;
+        //     $('#theme_listing').addClass('sticky_this');
+        //     $('#theme_listing').css('top', h + 'px');
+        // });
+        // window.addEventListener('load', function(event) {
+        //     let h = $('#cabecalho').innerHeight() - 1;
+        //     $('#theme_listing').addClass('sticky_this');
+        //     $('#theme_listing').css('top', h + 'px');
+        // });
     }
     $('#theme_listing-filters a').each(function(){
         if(window.location.href.indexOf($(this).attr('href')) >= 0){
@@ -1798,6 +1846,16 @@ theme.functions['pagina-produto'] = function(){
 
 
     //$('.atributos, .acoes-produto').wrapAll('<div class="p_productBox"></div>');
+    
+
+    //$('.info-principal-produto').after('<div theme-content="labels"></div>'); 
+
+    $('.avise-me .avise-descr').text('De tão bom, vendeu tudo. Deixe seu e-mail que avisaremos quando chegar.');
+
+
+    
+};
+theme.functions.brandLoaded = function(){
     if($('.codigo-produto [itemprop="brand"]')){
         let brand = $('.codigo-produto [itemprop="brand"] a').text();
         let brand_link = $('.codigo-produto [itemprop="brand"] a').clone();
@@ -1814,11 +1872,7 @@ theme.functions['pagina-produto'] = function(){
             }
         }
     }
-
-    //$('.info-principal-produto').after('<div theme-content="labels"></div>'); 
-    
-};
-
+}
 theme.functions['pagina-carrinho'] = function(){
     if($('.carrinho-checkout').length > 0){
         //OPEN FORM
@@ -1963,7 +2017,7 @@ $(document).ready(function(){
 
     $('#p_header .menu.superior > .nivel-um > li > a > strong:contains(Categorias)').closest('li').prev('li').nextAll().wrapAll('<ul class="nivel-dois borda-alpha" id="p_categories-group"></ul>');
     $('#p_categories-group').wrap('<li class="categoria-categorias com-filho borda-principal"></li>');
-    $('.categoria-categorias').prepend('<a href="javascript:;"><strong class="titulo">Categorias</strong><i class="icon-chevron-down fundo-secundario"></i></a>')
+    $('.categoria-categorias').prepend('<a href="javascript:;"><strong class="titulo">+Categorias</strong><i class="icon-chevron-down fundo-secundario"></i></a>')
     
 
     //theme.benefitsStripe
