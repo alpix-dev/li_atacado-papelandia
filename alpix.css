@@ -610,7 +610,7 @@ textarea:focus{
 }
 #theme_list-functions > a{
     display: block;
-    background: var(--productButtonAddBackground);
+    background: var(--cor4);
     color: var(--productButtonAddColor);
     font-size: 14px;
     white-space: nowrap;
@@ -624,7 +624,8 @@ textarea:focus{
     transition:all .2s
 }
 #theme_list-functions > a:hover{
-    background:#6abe83;
+    /* background:#6abe83; */
+    background:#8e8fd2;
 }
 #theme_list-functions > a > span i{
     font-size:12px;
@@ -1367,7 +1368,7 @@ margin:0;
     font-size: 16px;
     height: auto;
     box-sizing: border-box;
-    background: var(--productButtonAddBackground);
+    background: var(--cor4);
     color: var(--productButtonAddColor);
     border-radius: 5px!important;
     padding: 0 10px!important;
@@ -3470,7 +3471,8 @@ body:not(.pagina-inicial) .secao-banners .banner.cheio img{
 
 .menu.superior .categoria-marcas{order:10}
 .menu.superior .categoria-categorias{order:11}
-.categoria-start{}
+.categoria-start{transition:all .2s}
+.categoria-start:hover{scale:1.1}
 .categoria-start strong{
     background: #999ACC;
     border-radius: 5px;
@@ -3516,7 +3518,7 @@ body .listagem .produtos-carrossel .listagem-linha .listagem-item{
 
 .marcas a{position:relative}
 .marcas a.brand-cover {
-    aspect-ratio: .8;
+    aspect-ratio: 1.3;
     width: 100%;
     height: 100%;
     background-size:cover;
@@ -3766,20 +3768,21 @@ body .listagem .produtos-carrossel .listagem-linha .listagem-item{
 }
 
 .produto .principal .atributos{
-    border: 1px solid #94D8A8;
+    /* border: 1px solid #94D8A8; */
+    border:1px solid var(--cor4);
     border-radius: 5px 5px 0 0;
     border-bottom: 0;
     padding-top:5px;
 }
 .acoes-produto{
-    border: 1px solid #94D8A8!important;
+    border:1px solid var(--cor4)!important;
     border-radius: 5px;
     border-top: 0;
     padding: 15px!important;
     margin: 0!important;
 }
 .atributos ~ .acoes-produto{
-    border: 1px solid #94D8A8;
+    border:1px solid var(--cor4);
     border-radius: 0 0 5px 5px;
     border-top:0px!important;
     padding: 15px!important;
@@ -3934,12 +3937,12 @@ body .listagem .produtos-carrossel .listagem-linha .listagem-item{
     bottom: -5px;
     left: 0;
     display: block;
-    height: 2px;
+    height: 0px;
     transition: .2s all;
 }
 #theme_header-menu .menu.superior > ul > li:hover > a > strong:before{
     width:100%;
-    height:6px
+    height:4px
 }
 .menu.superior .nivel-dois a,
 .menu.superior .categoria-marcas .nivel-dois li a, .menu.superior .categoria-paginas .nivel-dois li a{

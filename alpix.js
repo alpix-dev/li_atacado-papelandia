@@ -163,7 +163,7 @@ theme.settings.sliders.fullbanner = {
 
 theme.settings.sliders.brands = {
     infinite: true,
-    slidesToShow: 5,
+    slidesToShow: 6,
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 2000,
@@ -1109,10 +1109,19 @@ theme.functions.bannerFromPanelFunctions = function(ref){
             style = style +"color:" + texto + ';';
             style = style + "background:" + fundo + ';';
             let description = $(this).next('.info-banner').length > 0 ? $(this).next('.info-banner').text().trim() : false;
+            let link = $(this).closest('li').find('a') ? $(this).closest('li').find('a').attr('href') : false;
+            console.log(link);
             if($('.theme_tarja-full').length == 0){
                 $('<div class="theme_tarja-full"></div>').prependTo('body');
             }
-            $('<div class="theme_tarja-full-item" style="'+ style +'"><p>'+ description +'</p></div>').appendTo('.theme_tarja-full');
+            if(link){
+                console.log('tem link');
+                $('<div class="theme_tarja-full-item" style="'+ style +'"><a style="'+ style +'" href="'+ link +'"><p>'+ description +'</p></a></div>').appendTo('.theme_tarja-full');
+            }else{
+                console.log('nao tem link');
+                $('<div class="theme_tarja-full-item" style="'+ style +'"><p>'+ description +'</p></div>').appendTo('.theme_tarja-full');
+            }
+            
             $(this).next('.info-banner').remove();
             $(this).closest('li').remove();
         }
@@ -1294,7 +1303,7 @@ theme.functions.init = function(){
         theme.functions.unflexBanners();
         //theme.functions.lateralBannerFromPanelFunctions();
         $('.listagem > .titulo-categoria').each(function(k, i){
-            $(this).next('ul').addBack().wrapAll('<div class="lista_'+ k + '"></div>');
+            $(this).next('ul').addBack().wrapAll('<div id="lista_'+ k + '" class="lista_'+ k + '"></div>');
         });
         theme.functions.bannerFromPanelFunctions();        
         theme.functions.slickBanners();
@@ -2238,3 +2247,14 @@ $(window).load(function(){
     theme.functions.WS_PAPELANDIA();
 });
 
+
+$(document).ready(function() {
+    $('.theme_tarja-full a[href^="#"]').on('click', function(event) {
+        event.preventDefault();
+        var target = $(this).attr('href');
+        var offset = $(target).offset().top - 175;
+        $('html, body').animate({
+            scrollTop: offset
+        }, 1000);
+    });
+});
