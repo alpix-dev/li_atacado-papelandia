@@ -1586,13 +1586,13 @@ theme.functions['pagina-inicial'] = function(){
         $('.marcas img').each(function(){
             let name = $(this).attr('alt');
             name = name ? name.toLowerCase().replaceAll(' ','-') : name;
-            let img = MEDIA_URL + window.LOJA_ID.toString().slice(0,4) + '/' + window.LOJA_ID + '/arquivos/capa_' + name + '.jpg';
+            let img = MEDIA_URL + window.LOJA_ID.toString().slice(0,4) + '/' + window.LOJA_ID + '/arquivos/capa_' + name + '.png';
             
             $(this).closest('a').addClass('brand-cover');
             $(this).closest('a').css('background-image','url('+ img +')');            
             $(this).after('<strong>'+ name +'</strong>');
             
-            img = MEDIA_URL + window.LOJA_ID.toString().slice(0,4) + '/' + window.LOJA_ID + '/arquivos/marca_' + name + '.jpg';
+            img = MEDIA_URL + window.LOJA_ID.toString().slice(0,4) + '/' + window.LOJA_ID + '/arquivos/marca_' + name + '.png';
             $(this).attr('src', img);            
         });
 
