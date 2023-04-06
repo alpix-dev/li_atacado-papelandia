@@ -2020,7 +2020,8 @@ $(document).ready(function(){
     $('.menu.superior > .nivel-um > li > a > strong:contains(Ocultar)').closest('li').prev('li').nextAll().remove();
 
     //funcao ocultar paginas no menu
-    let menuAjuda = $('<ul></ul>').append($('.footer-content-2 > ul > li > a:contains(Precisa de ajuda?)').closest('li').prev('li').nextAll());
+    let menuAjuda = $('<ul></ul>').append($('.footer-content-2 > ul > li > a:contains(Precisa de ajuda?)').closest('li').nextAll());
+    $('.footer-content-2 > ul > li > a:contains(Precisa de ajuda?)').closest('li').remove();
     menuAjuda.appendTo('.footer-content-3');
     $('#theme_footer-content1 > ul > li > a:contains(Ocultar)').closest('li').prev('li').nextAll().remove();
 
